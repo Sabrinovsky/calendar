@@ -1,8 +1,15 @@
+import { ChakraProvider } from '@chakra-ui/react';
+import { Calendar } from './Calendar/Calendar';
+import customTheme from './Theme';
+
 function App() {
   return (
-    <div className="">
+    <ChakraProvider theme={customTheme}>
       <header className=""></header>
-    </div>
+      <main>
+        <Calendar />
+      </main>
+    </ChakraProvider>
   );
 }
 
