@@ -1,50 +1,63 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
-import 'styles.scss';
-import { format } from 'date-fns';
+import './styles.scss';
+import { format, isPast } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 import useCalendar from './hooks';
 
 function Calendar(): JSX.Element {
-  const [state, setState] = useState(1);
-  const { calendar, nextMonth, previousMonth } = useCalendar();
-  const helloRef = useRef<HTMLDivElement>(null);
-  const goodbyeRef = useRef<HTMLDivElement>(null);
-  const nodeRef = state ? helloRef : goodbyeRef;
+  const { calendar, nextMonth, previousMonth, today } = useCalendar();
+  const nodeRef = useRef<HTMLDivElement>(null);
   const [direction, setDirection] = useState<'fade-left' | 'fade-right'>(
     'fade-left'
   );
 
+  const onClickToday = useCallback(() => {
+    const direction = isPast(calendar[15]) ? 'fade-left' : 'fade-right';
+
+    setDirection(direction);
+    setTimeout(() => {
+      today();
+    });
+  }, [today, calendar]);
+
+  const onClickPreviousMonth = useCallback(() => {
+    setDirection('fade-right');
+    setTimeout(() => {
+      previousMonth();
+    }, 0);
+  }, [previousMonth]);
+
+  const onClicknextMonth = useCallback(() => {
+    setDirection('fade-left');
+    setTimeout(() => {
+      nextMonth();
+    }, 0);
+  }, [nextMonth]);
+
   return (
     <div className="calendar flex-column">
-      <Flex alignItems="center" p="1rem">
+      <Flex gap="1rem" alignItems="center" p="1rem">
         <Button
-          fontSize="1.5rem"
+          border="1px"
+          borderColor="gray.300"
+          fontSize="1.2srem"
           bg="transparent"
-          onClick={() => {
-            setDirection('fade-right');
-            previousMonth();
-            setTimeout(() => {
-              setState((state) => state - 1);
-            }, 0);
-          }}
+          onClick={onClickToday}
         >
-          <ChevronLeftIcon />
+          <Text>Hoje</Text>
         </Button>
         <Button
           fontSize="1.5rem"
           bg="transparent"
-          onClick={() => {
-            setDirection('fade-left');
-            nextMonth();
-            setTimeout(() => {
-              setState((state) => state + 1);
-            }, 0);
-          }}
+          onClick={onClickPreviousMonth}
         >
+          <ChevronLeftIcon />
+        </Button>
+        <Button fontSize="1.5rem" bg="transparent" onClick={onClicknextMonth}>
           <ChevronRightIcon />
         </Button>
         <Text textTransform="capitalize" fontSize="1.6rem">
@@ -53,7 +66,7 @@ function Calendar(): JSX.Element {
       </Flex>
       <SwitchTransition mode="out-in">
         <CSSTransition
-          key={state}
+          key={calendar[15].toString()}
           nodeRef={nodeRef}
           addEndListener={(done) => {
             nodeRef?.current?.addEventListener('transitionend', done, false);

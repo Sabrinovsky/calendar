@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { generateCalendar } from '../utils';
-import { add, sub } from 'date-fns';
+import { add, isPast, isSameMonth, sub } from 'date-fns';
 
 export default function useCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -18,5 +18,12 @@ export default function useCalendar() {
     setCurrentDate(month);
   }, [currentDate]);
 
-  return { calendar, nextMonth, previousMonth };
+  const today = useCallback(() => {
+    if (isSameMonth(new Date(), currentDate)) return;
+
+    setCalendar(generateCalendar(new Date()));
+    setCurrentDate(new Date());
+  }, [currentDate]);
+
+  return { calendar, nextMonth, previousMonth, today };
 }
