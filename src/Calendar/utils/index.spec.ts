@@ -7,6 +7,7 @@ describe('generateCalendar', () => {
 
   it('returns an array with the current month', () => {
     const response = generateCalendar();
+    console.log(response)
 
     expect(response).toHaveLength(35);
     expect(response[0].toISOString()).toBe(
