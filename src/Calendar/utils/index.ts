@@ -22,7 +22,7 @@ function generateCalendar(date = new Date) {
     end: add(endOfMonth, { days: nextMonthLastDays }),
   });
 
-  return days.map((date)=>date.toISOString());
+ return days
 }
 
 export { generateCalendar };
