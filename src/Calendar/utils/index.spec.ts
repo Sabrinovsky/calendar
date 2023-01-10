@@ -8,7 +8,7 @@ describe('generateCalendar', () => {
   it('returns an array with the current month', () => {
     const response = generateCalendar();
     console.log(response)
-
+    console.log(new Date())
     expect(response).toHaveLength(35);
     expect(response[0].toISOString()).toBe(
       new Date('2020-05-30T23:00:00.000Z').toISOString()

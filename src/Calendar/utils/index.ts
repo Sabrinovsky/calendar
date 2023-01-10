@@ -10,8 +10,8 @@ import {
 // Saturday - 7
 const WEEK_DAYS = 7;
 
-function generateCalendar(date = new Date) {
-  const today = date
+function generateCalendar(date = new Date()) {
+  const today = date;
   const startOfMonth = startOfMonthFns(today);
   const endOfMonth = endOfMonthFns(today);
   const previousMonthLastDays = WEEK_DAYS - (WEEK_DAYS - startOfMonth.getDay());
@@ -22,7 +22,7 @@ function generateCalendar(date = new Date) {
     end: add(endOfMonth, { days: nextMonthLastDays }),
   });
 
- return days
+  return days.map((day) => add(day, { hours: 5 }));
 }
 
 export { generateCalendar };
