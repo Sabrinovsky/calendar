@@ -22,7 +22,7 @@ function generateCalendar(date = new Date()) {
     end: add(endOfMonth, { days: nextMonthLastDays }),
   });
 
-  return days.map((day) => add(day, { hours: 5 }));
+  return days
 }
 
 export { generateCalendar };
