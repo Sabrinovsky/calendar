@@ -2,7 +2,7 @@ import { generateCalendar } from './';
 
 describe('generateCalendar', () => {
   beforeEach(() => {
-    jest.useFakeTimers().setSystemTime(new Date('2020-06-06'));
+    jest.useFakeTimers().setSystemTime(new Date('2020-06-06T12:00:00'));
   });
 
   it('returns an array with the current month', () => {
