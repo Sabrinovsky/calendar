@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { generateCalendar } from '../utils';
-import { add, isPast, isSameMonth, sub } from 'date-fns';
+import { add, isSameMonth, sub } from 'date-fns';
 
 export default function useCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date());

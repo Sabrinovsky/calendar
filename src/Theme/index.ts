@@ -14,7 +14,7 @@ const colors = {
 const customTheme = extendTheme({
   colors: colors,
   styles: {
-    global: (_props: any) => ({
+    global: () => ({
       body: {
         color: colors.primaryFontColor.lightMode,
       },
