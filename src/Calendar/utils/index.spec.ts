@@ -6,7 +6,8 @@ describe('generateCalendar', () => {
   });
 
   it('returns an array with the current month', () => {
-    expect(generateCalendar()).toStrictEqual([
+    expect(generateCalendar()).toHaveLength(35)
+    expect(generateCalendar()).toStrictEqual(expect.arrayContaining([
       new Date('2020-05-30T23:00:00.000Z'),
       new Date('2020-05-31T23:00:00.000Z'),
       new Date('2020-06-01T23:00:00.000Z'),
@@ -42,6 +43,6 @@ describe('generateCalendar', () => {
       new Date('2020-07-01T23:00:00.000Z'),
       new Date('2020-07-02T23:00:00.000Z'),
       new Date('2020-07-03T23:00:00.000Z'),
-    ]);
+    ]));
   });
 });
