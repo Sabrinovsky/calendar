@@ -2,15 +2,15 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import { useRef, useState } from 'react';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
-import './styles.scss';
+import 'styles.scss';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
-const arr: number[] = [];
-for (let i = 1; i < 32; i++) {
-  arr.push(i);
-}
+import useCalendar from './hooks';
 
 function Calendar(): JSX.Element {
   const [state, setState] = useState(1);
+  const { calendar, nextMonth, previousMonth } = useCalendar();
   const helloRef = useRef<HTMLDivElement>(null);
   const goodbyeRef = useRef<HTMLDivElement>(null);
   const nodeRef = state ? helloRef : goodbyeRef;
@@ -20,12 +20,13 @@ function Calendar(): JSX.Element {
 
   return (
     <div className="calendar flex-column">
-      <Flex alignItems='center' p='1rem' >
+      <Flex alignItems="center" p="1rem">
         <Button
-          fontSize='1.5rem'
-          bg='transparent'
+          fontSize="1.5rem"
+          bg="transparent"
           onClick={() => {
-            setDirection('fade-left');
+            setDirection('fade-right');
+            previousMonth();
             setTimeout(() => {
               setState((state) => state - 1);
             }, 0);
@@ -34,10 +35,11 @@ function Calendar(): JSX.Element {
           <ChevronLeftIcon />
         </Button>
         <Button
-          fontSize='1.5rem'
-          bg='transparent'
+          fontSize="1.5rem"
+          bg="transparent"
           onClick={() => {
-            setDirection('fade-right');
+            setDirection('fade-left');
+            nextMonth();
             setTimeout(() => {
               setState((state) => state + 1);
             }, 0);
@@ -45,8 +47,8 @@ function Calendar(): JSX.Element {
         >
           <ChevronRightIcon />
         </Button>
-        <Text fontSize='1.6rem' >
-          Janeiro
+        <Text textTransform="capitalize" fontSize="1.6rem">
+          {format(calendar[15], 'MMMM yyyy', { locale: ptBR })}
         </Text>
       </Flex>
       <SwitchTransition mode="out-in">
@@ -66,8 +68,8 @@ function Calendar(): JSX.Element {
               className="animate"
             >
               <ul>
-                {arr.map((day) => (
-                  <li key={day}>{day}</li>
+                {calendar.map((day) => (
+                  <li key={day.toISOString()}>{format(day, 'dd')}</li>
                 ))}
               </ul>
             </Box>
