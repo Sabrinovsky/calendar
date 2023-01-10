@@ -9,7 +9,7 @@ describe('generateCalendar', () => {
     const response = generateCalendar();
     console.log({ response });
     expect(response).toHaveLength(35);
-    expect(response).toEqual(
+    expect(response).toStrictEqual(
       expect.arrayContaining([
         new Date('2020-05-30T23:00:00.000Z'),
         new Date('2020-05-31T23:00:00.000Z'),
