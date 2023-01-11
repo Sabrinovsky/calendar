@@ -1,9 +1,9 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, List, ListItem } from '@chakra-ui/react';
 import { useCallback, useRef, useState } from 'react';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
 import './styles.scss';
-import { format, isPast } from 'date-fns';
+import { format, isPast, isSameMonth } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 import useCalendar from './hooks';
@@ -54,11 +54,17 @@ function Calendar(): JSX.Element {
           fontSize="1.5rem"
           bg="transparent"
           onClick={onClickPreviousMonth}
+          title="Mês anterior"
         >
           <ChevronLeftIcon />
         </Button>
-        <Button fontSize="1.5rem" bg="transparent" onClick={onClicknextMonth}>
-          <ChevronRightIcon />
+        <Button
+          fontSize="1.5rem"
+          bg="transparent"
+          onClick={onClicknextMonth}
+          title="Próximo mês"
+        >
+          <ChevronRightIcon aria-hidden />
         </Button>
         <Text textTransform="capitalize" fontSize="1.6rem">
           {format(calendar[15], 'MMMM yyyy', { locale: ptBR })}
@@ -80,11 +86,17 @@ function Calendar(): JSX.Element {
               flex={1}
               className="animate"
             >
-              <ul>
+              <List>
                 {calendar.map((day) => (
-                  <li key={day.toISOString()}>{format(day, 'dd')}</li>
+                  <ListItem key={day.toISOString()}>
+                    <Text
+                      color={!isSameMonth(day, calendar[15]) ? 'gray.400' : ''}
+                    >
+                      {format(day, 'dd')}
+                    </Text>
+                  </ListItem>
                 ))}
-              </ul>
+              </List>
             </Box>
           </div>
         </CSSTransition>
