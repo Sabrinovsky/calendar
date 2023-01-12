@@ -1,5 +1,13 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import { Box, Button, Flex, Text, List, ListItem } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Text,
+  List,
+  ListItem,
+  Select,
+} from '@chakra-ui/react';
 import { useCallback, useRef, useState } from 'react';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
 import './styles.scss';
@@ -7,10 +15,10 @@ import { format, isPast, isSameMonth } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 import useCalendar from './hooks';
+import { Swipe } from '../components/Swipe/Swipe';
 
 function Calendar(): JSX.Element {
   const { calendar, nextMonth, previousMonth, today } = useCalendar();
-  const nodeRef = useRef<HTMLDivElement>(null);
   const [direction, setDirection] = useState<'fade-left' | 'fade-right'>(
     'fade-left'
   );
@@ -69,16 +77,13 @@ function Calendar(): JSX.Element {
         <Text textTransform="capitalize" fontSize="1.6rem">
           {format(calendar[15], 'MMMM yyyy', { locale: ptBR })}
         </Text>
+        <Select marginLeft="auto" width="120px">
+          <option value="month">Mês</option>
+          <option value="week">Semana</option>
+        </Select>
       </Flex>
-      <SwitchTransition mode="out-in">
-        <CSSTransition
-          key={calendar[15].toString()}
-          nodeRef={nodeRef}
-          addEndListener={(done) => {
-            nodeRef?.current?.addEventListener('transitionend', done, false);
-          }}
-          classNames={direction}
-        >
+      <Swipe animationKey={calendar[15].toISOString()} direction={direction}>
+        {(nodeRef) => (
           <div ref={nodeRef} className="flex-column">
             <Box
               display="flex"
@@ -99,8 +104,8 @@ function Calendar(): JSX.Element {
               </List>
             </Box>
           </div>
-        </CSSTransition>
-      </SwitchTransition>
+        )}
+      </Swipe>
     </div>
   );
 }
