@@ -4,7 +4,7 @@ import { add, isSameMonth, sub } from 'date-fns';
 
 export default function useCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [calendar, setCalendar] = useState(() => generateCalendar());
+  const [calendar, setCalendar] = useState(() => generateCalendar(new Date()));
 
   const nextMonth = useCallback(() => {
     const month = add(currentDate, { months: 1 });

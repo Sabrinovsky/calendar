@@ -8,16 +8,15 @@ import {
   ListItem,
   Select,
 } from '@chakra-ui/react';
-import { useCallback, useRef, useState } from 'react';
-import { SwitchTransition, CSSTransition } from 'react-transition-group';
+import { useCallback, useState } from 'react';
 import './styles.scss';
 import { format, isPast, isSameMonth } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-
 import useCalendar from './hooks';
 import { Swipe } from '../components/Swipe/Swipe';
 
 function Calendar(): JSX.Element {
+  const [view, setView] = useState('month');
   const { calendar, nextMonth, previousMonth, today } = useCalendar();
   const [direction, setDirection] = useState<'fade-left' | 'fade-right'>(
     'fade-left'
@@ -77,35 +76,48 @@ function Calendar(): JSX.Element {
         <Text textTransform="capitalize" fontSize="1.6rem">
           {format(calendar[15], 'MMMM yyyy', { locale: ptBR })}
         </Text>
-        <Select marginLeft="auto" width="120px">
+        <Select
+          onChange={(e) => setView(e.target.value)}
+          marginLeft="auto"
+          width="120px"
+        >
           <option value="month">Mês</option>
           <option value="week">Semana</option>
         </Select>
       </Flex>
-      <Swipe animationKey={calendar[15].toISOString()} direction={direction}>
-        {(nodeRef) => (
-          <div ref={nodeRef} className="flex-column">
-            <Box
-              display="flex"
-              flexDirection="column"
-              flex={1}
-              className="animate"
-            >
-              <List>
-                {calendar.map((day) => (
-                  <ListItem key={day.toISOString()}>
-                    <Text
-                      color={!isSameMonth(day, calendar[15]) ? 'gray.400' : ''}
-                    >
-                      {format(day, 'dd')}
-                    </Text>
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
-          </div>
-        )}
-      </Swipe>
+      {view === 'month' && (
+        <Swipe animationKey={calendar[15].toISOString()} direction={direction}>
+          {(nodeRef) => (
+            <div ref={nodeRef} className="flex-column">
+              <Box
+                display="flex"
+                flexDirection="column"
+                flex={1}
+                className="animate"
+              >
+                <List>
+                  {calendar.map((day, index) => (
+                    <ListItem key={day.toISOString()}>
+                      {index < 7 && (
+                        <Text color='gray.600' fontSize="0.7rem" textTransform="uppercase">
+                          {format(day, 'eeeeee', { locale: ptBR })}.
+                        </Text>
+                      )}
+                      <Text
+                        color={
+                          !isSameMonth(day, calendar[15]) ? 'gray.400' : ''
+                        }
+                      >
+                        {format(day, 'dd')}
+                      </Text>
+                    </ListItem>
+                  ))}
+                </List>
+              </Box>
+            </div>
+          )}
+        </Swipe>
+      )}
     </div>
   );
 }

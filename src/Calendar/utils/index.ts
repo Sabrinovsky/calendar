@@ -1,6 +1,8 @@
 import {
   startOfMonth as startOfMonthFns,
   endOfMonth as endOfMonthFns,
+  startOfWeek as startOfWeekFns,
+  endOfWeek as endOfWeekFns,
   eachDayOfInterval,
   sub,
   add,
@@ -10,10 +12,9 @@ import {
 // Saturday - 7
 const WEEK_DAYS = 7;
 
-function generateCalendar(date = new Date()) {
-  const today = date;
-  const startOfMonth = startOfMonthFns(today);
-  const endOfMonth = endOfMonthFns(today);
+function generateCalendar(date: Date) {
+  const startOfMonth = startOfMonthFns(date);
+  const endOfMonth = endOfMonthFns(date);
   const previousMonthLastDays = WEEK_DAYS - (WEEK_DAYS - startOfMonth.getDay());
   const nextMonthLastDays = WEEK_DAYS - endOfMonth.getDay() - 1;
 
@@ -25,4 +26,16 @@ function generateCalendar(date = new Date()) {
   return days
 }
 
-export { generateCalendar };
+function generateWeekCalendar(date: Date){
+  const startOfWeek = startOfWeekFns(date);
+  const endOfWeekOfWeek = endOfWeekFns(date);
+
+  const days = eachDayOfInterval({
+    start: startOfWeek,
+    end: endOfWeekOfWeek,
+  });
+
+  return days
+}
+
+export { generateCalendar, generateWeekCalendar };
