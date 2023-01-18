@@ -11,7 +11,8 @@ const config: Config = {
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
-  setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"]
+  setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
+  globalSetup: './jest/global-setup.js'
 };
 
 export default config;
