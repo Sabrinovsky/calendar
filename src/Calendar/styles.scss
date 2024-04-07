@@ -42,16 +42,57 @@
 
 .calendar {
   ul {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: 1fr;
     height: 100%;
   }
 
   li {
     padding-top: 10px;
-    width: calc(100% / 7);
     display: inline-block;
     border: 1px solid rgb(232, 232, 232);
     text-align: center;
+  }
+
+  .today {
+    background-color: var(--chakra-colors-blue-600);
+    color: white;
+    height: 40px;
+    width: 40px;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .week {
+    .hour {
+      padding: 5px;
+      margin-top: 0;
+      text-align: center;
+      border: 1px solid gainsboro;
+    }
+
+    .hour-indicator::after{
+      content: "";
+      position: absolute;
+      width: 10px;
+      height: 1px;
+      background-color: gainsboro;
+      top: 10px;
+      right: -14px;
+    }
+
+    .hour ~ .hour {
+      border-top: none;
+    }
+  }
+
+  .week:not(:last-child) {
+    .hour {
+      border-right: none;
+    }
   }
 }
