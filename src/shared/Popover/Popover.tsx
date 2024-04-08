@@ -1,8 +1,9 @@
-import { Popover as ChakraPopover, Button, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverTrigger, Portal } from "@chakra-ui/react";
+import { Popover as ChakraPopover, Button, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverTrigger, Portal, useDisclosure, usePopover } from "@chakra-ui/react";
 
-export function Popover({ children, content }: { children: React.ReactNode, content: () => React.ReactNode }) {
+export function Popover({ children, content, isOpen }: { children: React.ReactNode, content: React.ReactNode, isOpen: boolean }) {
+
   return (
-    <ChakraPopover placement="top-end">
+    <ChakraPopover isLazy={true} lazyBehavior='unmount' isOpen={isOpen} placement="top-end">
       <PopoverTrigger>
         {children}
       </PopoverTrigger>
@@ -11,7 +12,7 @@ export function Popover({ children, content }: { children: React.ReactNode, cont
           <PopoverArrow />
           <PopoverCloseButton />
           <PopoverBody>
-            {content()}
+            {content}
           </PopoverBody>
         </PopoverContent>
       </Portal>

@@ -1,10 +1,16 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Text, useDisclosure } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
+import { useCallback, useState } from 'react';
 import { Popover } from '../../../shared/Popover/Popover';
 import { NewEvent } from '../NewEvent/NewEvent';
 
 export default function WeekCalendar({ weekCalendar }: { weekCalendar: Date[] }) {
+  // const { } = useDisclosure()
+  const [popoverProps, setPopoverProps] = useState<{ day?: Date, hour?: number }>()
+  const toggle = useCallback((day: Date, hour: number) => {
+    setPopoverProps({ day, hour })
+  }, [])
   return (
     <Flex className='animate' flexDirection="column" flex={1}>
       <Flex flexDirection="row" flex={1} paddingInline={10}>
@@ -28,8 +34,15 @@ export default function WeekCalendar({ weekCalendar }: { weekCalendar: Date[] })
             </Text>
             <Flex flex={1} flexDirection="column">
               {Array.from(Array(24).keys()).map((hour) => (
-                <Popover key={hour} content={()=> NewEvent({day, hour})}>
+                <Popover
+                  isOpen={popoverProps?.day === day && popoverProps?.hour === hour}
+                  key={day.toISOString() + hour}
+                  content={
+                    <NewEvent key={day.toISOString() + hour} hour={hour} day={day} />
+                  }
+                >
                   <Flex
+                    onClick={() => toggle(day, hour)}
                     role='listitem'
                     position="relative"
                     flex={1}
@@ -50,6 +63,7 @@ export default function WeekCalendar({ weekCalendar }: { weekCalendar: Date[] })
                         {hour}h
                       </Flex>
                     )}
+
                   </Flex>
                 </Popover>
               ))}
