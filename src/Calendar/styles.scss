@@ -41,6 +41,7 @@
 }
 
 .calendar {
+  overflow-x: hidden;
   ul {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -69,7 +70,6 @@
 
   .week {
     .hour {
-      padding: 5px;
       margin-top: 0;
       text-align: center;
       border: 1px solid gainsboro;
